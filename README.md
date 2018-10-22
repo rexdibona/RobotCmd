@@ -1,2 +1,2 @@
 # RobotCmd
-Robot Command Strusture
+Robot Command Structure
