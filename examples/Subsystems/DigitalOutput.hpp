@@ -2,6 +2,10 @@
  * This is a wrapper around a digital output.
  * It can be set to high or Low.
  */
+
+#ifndef	_DIGITALOUTPUT_HPP
+#define	_DIGITALOUTPUT_HPP
+
 class DigitalOutput {
 private:
 	int _pin;
@@ -13,7 +17,9 @@ public:
 	}
 
 	void
-	setOutput(bool value) {
+	setValue(bool value) {
 		digitalWrite(_pin, value);
 	}
 };
+
+#endif	// DigitalOutput.hpp

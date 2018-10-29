@@ -27,8 +27,12 @@ public:
 
 	RobotResponder::RobotResponder(Event *ep) {
 		_ep = ep;
-		_cmd = NULL;
+		_onTrue_cmd = NULL;
+		_onFalse_cmd = NULL;
+		_whileTrue_cmd = NULL;
+
 		_active = false;
+
 		_next = NULL;
 		TriggerMonitor::Instance()->addTrigger(this);
 	}
@@ -55,7 +59,7 @@ public:
 	 */
 	void
 	update() {
-		bool temp = _ep->event();
+		bool temp = _ep->getValue();
 		if (temp) {
 			if (_whileTrue_cmd != NULL) {
 				_whileTrue_cmd->start();
