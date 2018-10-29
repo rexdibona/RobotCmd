@@ -49,6 +49,7 @@ public:
 				continue;
 			}
 			if (ptr->execute()) {
+				ptr->end();
 				ptr->_active = false;
 				setParallelActive(ptr->_child);
 			}

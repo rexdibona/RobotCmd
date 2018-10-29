@@ -14,8 +14,7 @@ public:
 	RobotCmd *_child;	// next serial command
 	RobotCmd *_sibling;	// next parallel command
 
-	RobotCmd::RobotCmd()
-	{
+	RobotCmd::RobotCmd() {
 		_active = false;
 		_next = NULL;
 		_child = NULL;
@@ -28,6 +27,8 @@ public:
 
 	virtual void end() = 0;
 
+	virtual void cancel() = 0;
+
 	/*
 	 * Framework functions.
 	 * These should not be overridden by derived classes
@@ -38,8 +39,7 @@ public:
 	 * The caller has to ensure we are not losing information.
 	 */
 	RobotCmd *
-	RobotCmd::setNext(RobotCmd *newRC)
-	{
+	RobotCmd::setNext(RobotCmd *newRC) {
 		_next = newRC;
 		return this;
 	}
@@ -49,8 +49,7 @@ public:
 	 * We walk to the end of the list before we add it.
 	 */
 	RobotCmd *
-	RobotCmd::addSequential(RobotCmd *newRC)
-	{
+	RobotCmd::addSequential(RobotCmd *newRC) {
 		if (_child == NULL) {
 			_child = newRC;
 		} else {
@@ -64,12 +63,36 @@ public:
 	 * We walk to the end of the list before we add it.
 	 */
 	RobotCmd *
-	RobotCmd::addParallel(RobotCmd *newRC)
-	{
+	RobotCmd::addParallel(RobotCmd *newRC) {
 		if (_sibling == NULL) {
 			_sibling = newRC;
 		} else {
 			_sibling->addParallel(newRC);
+		}
+		return this;
+	}
+
+	/*
+	 * start this command running.
+	 * If the command is not active we run its initialise() method, then
+	 * set the active flag.
+	 */
+
+	RobotCmd *
+	RobotCmd::start() {
+		if (_active == false) {
+			this->initialise();
+			_active = true;
+		}
+		return this;
+	}
+
+	RobotCmd *
+	RobotCmd::stop() {
+		if (_active) {
+			this->cancel();
+			this->end();
+			_active = false;
 		}
 		return this;
 	}
