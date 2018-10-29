@@ -3,7 +3,7 @@
  * It is built as a command that never dies, so that we can run it from
  * RobotRunner as an adhoc command.
  * 
- * When run it will call the update(0 method of all registered triggers.
+ * When run it will call the update() method of all registered triggers.
  *
  */
 
@@ -13,7 +13,7 @@
 #include "Trigger.hpp"
 
 
-class TriggerMonitor {
+class TriggerMonitor: public RobotCmd {
 	private:
 	Trigger *_triggerBase = NULL;
 	TriggerMonitor() {
@@ -26,20 +26,25 @@ class TriggerMonitor {
 		return singleton;
 	}
 
-	void
-	addTrigger(Trigger *tp) {
+	void initialise() {
+	}	
+
+	void addTrigger(Trigger *tp) {
 		tp->_next = _triggerBase;
 		_triggerBase = tp;
 	}
 
-	update() {
+	bool execute() {
 		Trigger *tp;
 
 		for (tp = _triggerBase; tp != NULL; tp = tp->_next) {
 			tp->update();
 		}
+		return false;
 	}
-};	
 
+	void end() {
+	}
+};
 
 #endif	/* TriggerMonitor.hpp */

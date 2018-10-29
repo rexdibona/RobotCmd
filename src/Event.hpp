@@ -15,7 +15,7 @@ public:
 	/**
 	* The event() method retuns a boolean that is true if the event has occurred.
 	*/
-	virtual bool event() = 0;
+	virtual bool getValue() = 0;
 };
 
 #endif /* Event.hpp */
