@@ -15,15 +15,6 @@
 
 class RobotRunner {
 public:
-	RobotCmd *_base;	// normal command structures
-	RobotCmd *_adhoc;	// adhoc commands, just added as a command.
-	
-	RobotRunner::RobotRunner()
-	{
-		_base = NULL;	// initialise it!
-		_adhoc = TriggerMonitor::Instance();
-	}
-
 	RobotRunner *
 	RobotRunner::adhoc(RobotCmd *newRC) {
 		if (newRC == NULL) return;	// all done
@@ -75,6 +66,21 @@ public:
 				setParallelActive(ptr->_child);
 			}
 		}
+	}
+
+	static RobotRunner& Instance() {
+		static RobotRunner singleton;
+		return singleton;
+	}
+
+private:
+	RobotCmd *_base;	// normal command structures
+	RobotCmd *_adhoc;	// adhoc commands, just added as a command.
+	
+	RobotRunner::RobotRunner()
+	{
+		_base = NULL;	// initialise it!
+		_adhoc = TriggerMonitor::Instance();
 	}
 };
 
